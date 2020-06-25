@@ -28,11 +28,13 @@
 * Device(s)    : R5F100LE
 * Tool-Chain   : CA78K0R
 * Description  : This file implements main function.
-* Creation Date: 18/01/2018
+
+* author(s)    : Nikhil, switaja, Karthik, Chaithanya
+
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-Pragma directive
+
 ***********************************************************************************************************************/
 /* Start user code for pragma. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
@@ -49,6 +51,7 @@ Includes
 
 #include "ALCD64.c"
 #include "ADC64.c"
+
 #include "GSM.c"
 
 
@@ -67,6 +70,13 @@ Includes
 //#define Trolley_Park_SW P4.2
 // #define Ultrasonic_Sensor P4.3
 
+
+
+#define RF_Tx0 P5.0
+#define RF_Tx1 P5.1
+#define RF_Tx2 P5.3
+
+
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 
@@ -75,10 +85,15 @@ Global variables and functions
 ***********************************************************************************************************************/
 /* Start user code for global. Do not edit comment generated here */
 
+
+void Device_Init( void );
+
+//>>>>>>> master
 extern unsigned char Rx_data_arr0[400], Rx_data_arr1[100],Rx_data_arr2[100];
 extern unsigned char Rx_count0, Rx_count1,Rx_count2;
 extern unsigned char Rx_ST_Flag0, Rx_ST_Flag1,Rx_ST_Flag2;
 extern unsigned char Rx_data0, Rx_data1,Rx_data2;
+
 
 unsigned char UART_TX_ARR[14] = "    ";
 
@@ -127,6 +142,9 @@ void RFID_Tag_Compare( void );
 
 void MSDelay11( unsigned int Milli_Sec );
 
+
+unsigned int RF_Sent_Flag;
+
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -138,6 +156,7 @@ void MSDelay11( unsigned int Milli_Sec );
 void main(void)
 {
     /* Start user code. Do not edit comment generated here */
+
 	unsigned int i, y;
 	
 	Device_Init( );
@@ -284,6 +303,91 @@ void main(void)
 		}
 	}
 
+//=======
+	
+	Device_Init();
+	MSDelay( 200 );
+	
+		RF_Tx0 = 1;
+		RF_Tx1 = 1;
+		RF_Tx2 = 1;
+	MSDelay( 4000 );
+
+		RF_Tx0 = 0;
+		RF_Tx1 = 0;
+		RF_Tx2 = 0;
+
+	
+	R_ADC_Start();
+	MSDelay( 500 );
+	ALCD_Comm( 0x01 );             // TO CLEAR THE SCREEN
+	MSDelay( 500 );
+	
+	while(1)
+    {
+		RF_Tx0 = 0;
+		RF_Tx1 = 0;
+		RF_Tx2 = 0;
+		RF_Sent_Flag = 0;
+		
+	    ADC64_Start(0x00);
+	    ALCD_Message(0x80,Volt_Value);
+	
+		if ( Volt_Temp <= 145 )
+		{
+		    ALCD_Message( 0xC0, " BACKWARD "  );
+	
+			RF_Tx0 = 1;
+			RF_Tx1 = 0;
+			RF_Tx2 = 0;
+		    MSDelay(5000);
+			ALCD_Message( 0xC0, "           "  );	
+			RF_Sent_Flag = 1;
+		}
+		else if( Volt_Temp >= 175 )
+		{
+			ALCD_Message( 0xC0, "  FORWARD  "  );	
+			RF_Tx0 = 0;
+			RF_Tx1 = 1;
+			RF_Tx2 = 0;
+		    MSDelay(5000);
+			ALCD_Message( 0xC0, "           "  );	
+			RF_Sent_Flag = 1;
+		}
+		
+		
+	    ADC64_Start(0x01);
+	    ALCD_Message(0x85,Volt_Value);
+		
+		if( RF_Sent_Flag == 0 )
+		{
+			if (Volt_Temp <= 145) 
+			{
+				ALCD_Message( 0xC0, "  LEFT   "  );	
+				RF_Tx0 = 1;
+				RF_Tx1 = 1;
+				RF_Tx2 = 0;
+			    MSDelay(5000);
+				ALCD_Message( 0xC0, "           "  );	
+				RF_Sent_Flag = 1;
+			}
+			else if( Volt_Temp >= 185 )
+			{
+			    ALCD_Message( 0xC0, "  RIGHT   "  );	
+				RF_Tx0 = 0;
+				RF_Tx1 = 0;
+				RF_Tx2 = 1;
+			    MSDelay(5000);
+				ALCD_Message( 0xC0, "           "  );	
+				RF_Sent_Flag = 1;
+			}
+		}
+		
+	    MSDelay(2000);
+	    
+	}
+	
+//>>>>>>> master
 	
     while (1U)
     {
@@ -296,6 +400,7 @@ void main(void)
 
 void Device_Init( void )
 {
+//<<<<<<< iamniki01-Receiver_side
 	MSDelay(200);
 	ALCD_Init( );
 	MSDelay(200);
@@ -620,5 +725,34 @@ void Reverse_L_R( void )
 }
 
 
+
+
+	MSDelay( 20 );							// 0.2 sec delay
+	ALCD_Init( );
+
+	MSDelay( 200 );	  
+	ALCD_Message( 0x80, "     WELCOME    "  );// 0.2 sec delay
+	MSDelay( 2000 );	
+	ALCD_Message( 0xC0, "  SHOPPING MALL "  );
+	MSDelay( 1000 );
+	
+	R_SAU0_Create();
+	R_UART0_Start();
+	MSDelay( 500 );
+	
+	R_UART1_Start();
+	MSDelay( 500 );
+	
+	R_SAU1_Create( );
+	R_UART2_Start();
+	MSDelay( 500 );
+	
+	R_ADC_Create();
+	R_ADC_Set_OperationOn();
+	R_ADC_Start();
+	MSDelay( 500 );
+	
+	
+}
 
 /* End user code. Do not edit comment generated here */

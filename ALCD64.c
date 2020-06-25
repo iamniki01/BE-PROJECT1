@@ -1,12 +1,17 @@
 //--------------------------------------------------------------------------------------------------------------------
+
 // ALCD64.c
 //--------------------------------------------------------------------------------------------------------------------
 
-// AUTH:	SHASHI KIRAN
+// AUTH:	Nikhil gowda
+
+//ALCD64.c
+//--------------------------------------------------------------------------------------------------------------------
+
+
 // DATE:	09/09/2013
 
-// MODIFIED BY:
-// MODIFIED DATE:
+
 
 // Program to 
 
@@ -21,8 +26,10 @@
 #define ALCD_RS P0.5
 #define ALCD_Enable P0.6
 
+//<<<<<<< iamniki01-Receiver_side
 #define Ultra_Front_Obst P4.3
 
+//>>>>>>> master
 //--------------------------------------------------------------------------------------------------------------------
 // Global VARIABLES
 //--------------------------------------------------------------------------------------------------------------------
@@ -32,8 +39,11 @@
 // Global CONSTANTS
 //--------------------------------------------------------------------------------------------------------------------
 
+//<<<<<<< iamniki01-Receiver_side
 unsigned char Ultrsonic_Obst_Flag;
-//unsigned char Ultra_Front_Obst;
+unsigned char Ultra_Front_Obst;
+//=======
+//>>>>>>> master
 
 //--------------------------------------------------------------------------------------------------------------------
 // Function PROTOTYPES
@@ -44,8 +54,11 @@ void ALCD_Message( unsigned char addr, unsigned char *data_ptr );
 void ALCD_Comm( unsigned char comm_data );				// Sending Commands
 void ALCD_Data( unsigned char disp_data );				// Sending Data
 void MSDelay( unsigned int Milli_Sec );					// Delay of 1 milli second
+//<<<<<<< iamniki01-Receiver_side
 void Robot_OFF( );
 void Forward_L_R( void );
+//=======
+//>>>>>>> master
 
 //--------------------------------------------------------------------------------------------------------------------
 // void ALCD_Init( void )
@@ -148,6 +161,7 @@ void MSDelay( unsigned int Milli_Sec )
 	{
 		for(y=0;y<3000;y++)
 		{
+
 		}
 		
 /*		
@@ -171,11 +185,9 @@ void MSDelay( unsigned int Milli_Sec )
 		}
 
 */
+//=======
+			;
+		}
+//>>>>>>> master
 	}
 }
-
-
-
-
-
-
