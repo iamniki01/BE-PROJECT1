@@ -28,7 +28,7 @@
 * Device(s)    : R5F100LE
 * Tool-Chain   : CA78K0R
 * Description  : This file implements device driver for Serial module.
-* Creation Date: 13/01/2018
+
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -44,7 +44,6 @@ Pragma directive
 #pragma interrupt INTSR2 r_uart2_interrupt_receive
 #pragma interrupt INTSRE2 r_uart2_interrupt_error
 /* Start user code for pragma. Do not edit comment generated here */
-
 
 /* End user code. Do not edit comment generated here */
 
@@ -84,6 +83,21 @@ unsigned char Rx_ST_Flag0, Rx_ST_Flag1,Rx_ST_Flag2;
 unsigned char Rx_data0, Rx_data1,Rx_data2;
 
 
+
+/*
+    Rx_ST_Flag0 = 1;
+    Rx_data0 = RXD0;
+    Rx_data_arr0[Rx_count0++] = Rx_data0;
+    Rx_data_arr0[Rx_count0] = '\0';
+
+    Rx_ST_Flag1 = 1;
+	Rx_data1 = RXD1;
+	Rx_data_arr1[Rx_count1++] = Rx_data1;
+	Rx_data_arr1[Rx_count1] = '\0';
+	
+*/
+	
+
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -94,11 +108,18 @@ unsigned char Rx_data0, Rx_data1,Rx_data2;
 ***********************************************************************************************************************/
 __interrupt static void r_uart0_interrupt_receive(void)
 {
+
+    Rx_ST_Flag0 = 1;
+    Rx_data0 = RXD0;
+    Rx_data_arr0[Rx_count0++] = Rx_data0;
+    Rx_data_arr0[Rx_count0] = '\0';
+
    Rx_ST_Flag0 = 1;
 	Rx_data0 = RXD0;
 	Rx_data_arr0[Rx_count0++] = Rx_data0;
 	Rx_data_arr0[Rx_count0] = '\0';
 	RXD0=0;
+
 }
 
 /***********************************************************************************************************************
@@ -184,7 +205,9 @@ __interrupt static void r_uart1_interrupt_receive(void)
 	Rx_data1 = RXD1;
 	Rx_data_arr1[Rx_count1++] = Rx_data1;
 	Rx_data_arr1[Rx_count1] = '\0';
+
 	RXD1=0;    
+
 }
 
 /***********************************************************************************************************************
@@ -266,11 +289,13 @@ static void r_uart1_callback_error(uint8_t err_type)
 ***********************************************************************************************************************/
 __interrupt static void r_uart2_interrupt_receive(void)
 {
+
    Rx_ST_Flag2 = 1;
 	Rx_data2 = RXD2;
 	Rx_data_arr2[Rx_count2++] = Rx_data2;
 	Rx_data_arr2[Rx_count2] = '\0';
 	RXD2=0;
+
 }
 
 /***********************************************************************************************************************

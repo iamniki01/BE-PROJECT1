@@ -29,7 +29,7 @@
 ;* Device(s)    : R5F100LE
 ;* Tool-Chain   : CA78K0R
 ;* Description  : This is the link file.
-;* Creation Date: 13/01/2018
+
 ;***********************************************************************************************************************
 ;*/
 ; [Sample of Link Directive File]

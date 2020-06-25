@@ -28,7 +28,7 @@
 * Device(s)    : R5F100LE
 * Tool-Chain   : CA78K0R
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 13/01/2018
+/
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -67,8 +67,13 @@ void R_ADC_Create(void)
     /* Set INTAD low priority */
     ADPR1 = 1U;
     ADPR0 = 1U;
+//<<<<<<< iamniki01-Receiver_side
+    /* Set ANI0 - ANI4 pin as analog input */
+    PM2 |= 0x1FU;
+//=======
     /* Set ANI0 - ANI3 pin as analog input */
     PM2 |= 0x0FU;
+//>>>>>>> master
     /* Set ANI18 pin */
     PMC14 |= 0x80U;
     PM14 |= 0x80U;

@@ -28,7 +28,7 @@
 * Device(s)    : R5F100LE
 * Tool-Chain   : CA78K0R
 * Description  : This file implements device driver for ADC module.
-* Creation Date: 13/01/2018
+
 ***********************************************************************************************************************/
 
 #ifndef ADC_H
@@ -124,7 +124,7 @@ Macro definitions (Register bit)
 #define _00_AD_NEGATIVE_VSS             (0x00U) /* use VSS as VREF(-) */
 #define _20_AD_NEGATIVE_AVREFM          (0x20U) /* use AVREFM as VREF(-) */
 /* AD conversion result upper/lower bound value selection (ADRCK) */
-#define _00_AD_AREA_MODE_1              (0x00U) /* generates INTAD when ADLL ¡Ü ADCRH ¡Ü ADUL */
+#define _00_AD_AREA_MODE_1              (0x00U) /* generates INTAD when ADLL Â¡Ãœ ADCRH Â¡Ãœ ADUL */
 #define _08_AD_AREA_MODE_2_3            (0x08U) /* generates INTAD when ADUL < ADCRH or ADLL > ADCRH */
 /* AD wakeup function selection (AWC) */
 #define _00_AD_WAKEUP_OFF               (0x00U) /* stop wakeup function */
